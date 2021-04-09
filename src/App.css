@@ -38,7 +38,8 @@ h1 {
   display: flex;
   background: #f6f6f6;
   font-family: monospace;
-  line-height: 1.5;
+  font-size: 14px;
+  line-height: 22px;
   cursor: pointer;
   position: relative;
 }
@@ -88,6 +89,7 @@ h1 {
 }
 
 .code {
+  font-family: monospace;
   margin: 0;
 }
 

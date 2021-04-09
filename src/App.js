@@ -15,9 +15,7 @@ function App() {
   const isSelecting = selectionStart !== null && selectionEnd === null;
 
   useEffect(() => {
-    console.log(processed);
     const totals = processed ? calculateTotals(processed) : null;
-    console.log(totals);
     setTotals(totals);
   }, [processed]);
 
@@ -146,7 +144,7 @@ function App() {
           })}
         </>
       )}
-      <div class="footer">
+      <div className="footer">
         <span>&copy; 2021 Graham Bates</span>
       </div>
     </div>
