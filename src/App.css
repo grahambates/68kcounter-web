@@ -118,6 +118,9 @@ span[title] {
   padding: 1rem;
   background: #ddd;
 }
+.totals > span {
+  margin-right: 1em;
+}
 
 .footer {
   padding: 1rem;

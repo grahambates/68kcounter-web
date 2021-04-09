@@ -105,19 +105,21 @@ function App() {
 
           {totals && (
             <div className="totals">
-              <div>
+              <span>
                 <strong>Total length: </strong>
                 <Words words={totals.words} /> words ({totals.words * 2} bytes)
-              </div>
-              {/* {totals.isRange ? (
-                <>
-                  <strong>Total cycles: </strong>
-                  Min: <Timings timings={totals.min} />
-                  Max: <Timings timings={totals.max} />
-                </>
-              ) : (
-                <Timings timings={totals.min} />
-              )} */}
+              </span>
+              <span>
+                <strong>Total cycles: </strong>
+                {totals.isRange ? (
+                  <>
+                    min: <Timings timings={totals.min} />
+                    max: <Timings timings={totals.max} />
+                  </>
+                ) : (
+                  <Timings timings={totals.min} />
+                )}
+              </span>
             </div>
           )}
 
