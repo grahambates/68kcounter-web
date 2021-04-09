@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback, memo } from "react";
-import process from "68kcounter";
+import process, { calculateTotals, lengthLevel, timingLevel } from "68kcounter";
 import "./App.css";
 
 function App() {
@@ -8,48 +8,26 @@ function App() {
   const [selectionStart, setSelectionStart] = useState(null);
   const [selectionEnd, setSelectionEnd] = useState(null);
   const [selectionHover, setSelectionHover] = useState(null);
+  const [selectionTotals, setSelectionTotals] = useState(null);
   const [totals, setTotals] = useState(null);
 
   const hasSelection = selectionStart !== null && selectionEnd !== null;
   const isSelecting = selectionStart !== null && selectionEnd === null;
 
   useEffect(() => {
+    console.log(processed);
+    const totals = processed ? calculateTotals(processed) : null;
+    console.log(totals);
+    setTotals(totals);
+  }, [processed]);
+
+  useEffect(() => {
     if (!hasSelection || !processed) {
-      setTotals(null);
+      setSelectionTotals(null);
       return;
     }
-
-    // Calculate totals
-    let words = 0;
-    const min = { clock: 0, read: 0, write: 0 };
-    const max = { clock: 0, read: 0, write: 0 };
-    let isRange = false;
-
-    for (let i = selectionStart; i <= selectionEnd; i++) {
-      if (processed[i].words) {
-        words += processed[i].words;
-      }
-      const timing = processed[i].timings;
-      if (!timing) {
-        continue;
-      }
-      const isArray = timing.clock === undefined;
-      if (isArray) {
-        isRange = true;
-      }
-
-      const timings = isArray ? timing : [timing];
-      const clocks = timings.map((n) => n.clock);
-      const reads = timings.map((n) => n.read);
-      const writes = timings.map((n) => n.write);
-      min.clock += Math.min(...clocks);
-      min.read += Math.min(...reads);
-      min.write += Math.min(...writes);
-      max.clock += Math.max(...clocks);
-      max.read += Math.max(...reads);
-      max.write += Math.max(...writes);
-    }
-    setTotals({ words, min, max, isRange });
+    const range = processed.slice(selectionStart, selectionEnd + 1);
+    setSelectionTotals(calculateTotals(range));
   }, [selectionStart, selectionEnd, hasSelection, processed]);
 
   const handleSubmit = (e) => {
@@ -109,7 +87,7 @@ function App() {
 
       {processed && (
         <>
-          <div class="help">
+          <div className="help">
             <ul>
               <li>
                 Data is shown in the left colum in the format:
@@ -121,11 +99,30 @@ function App() {
                 taken", then "branch not taken"
               </li>
               <li>
-                Select a range of lines to calculate totals for a section of
-                code.
+                Click to select a range of lines and calculate totals for a
+                section of code.
               </li>
             </ul>
           </div>
+
+          {totals && (
+            <div className="totals">
+              <div>
+                <strong>Total length: </strong>
+                <Words words={totals.words} /> words ({totals.words * 2} bytes)
+              </div>
+              {/* {totals.isRange ? (
+                <>
+                  <strong>Total cycles: </strong>
+                  Min: <Timings timings={totals.min} />
+                  Max: <Timings timings={totals.max} />
+                </>
+              ) : (
+                <Timings timings={totals.min} />
+              )} */}
+            </div>
+          )}
+
           {processed.map((l, i) => {
             const a = selectionStart;
             const b = hasSelection ? selectionEnd : selectionHover;
@@ -140,7 +137,7 @@ function App() {
                 key={i + l.text}
                 line={l}
                 i={i}
-                totals={i === selectionStart ? totals : null}
+                totals={i === selectionStart ? selectionTotals : null}
                 isSelected={isSelected}
                 onHover={setSelectionHover}
                 onClick={handleSelect}
@@ -149,6 +146,9 @@ function App() {
           })}
         </>
       )}
+      <div class="footer">
+        <span>&copy; 2021 Graham Bates</span>
+      </div>
     </div>
   );
 }
@@ -177,16 +177,7 @@ const Line = memo(({ isSelected, onHover, onClick, line, i, totals }) => {
 });
 
 function Words({ words, color }) {
-  let className;
-  if (color) {
-    if (words > 2) {
-      className = "high";
-    } else if (words === 2) {
-      className = "med";
-    } else {
-      className = "low";
-    }
-  }
+  const className = color ? lengthLevel(words).toLowerCase() : "";
   return (
     <span
       className={className}
@@ -197,19 +188,9 @@ function Words({ words, color }) {
   );
 }
 
-function Timings({ timings: { clock, read, write }, color }) {
-  let className;
-  if (color) {
-    if (clock > 30) {
-      className = "vhigh";
-    } else if (clock > 20) {
-      className = "high";
-    } else if (clock > 12) {
-      className = "med";
-    } else {
-      className = "low";
-    }
-  }
+function Timings({ timings, color }) {
+  const { clock, read, write } = timings;
+  const className = color ? timingLevel(timings).toLowerCase() : "";
   return (
     <span className={"timings " + className}>
       <span title={clock + " CPU clock cycles"}>{clock}</span>(
@@ -221,7 +202,7 @@ function Timings({ timings: { clock, read, write }, color }) {
 
 function Totals({ totals: { min, max, isRange, words } }) {
   return (
-    <div className="totals">
+    <div className="lineTotals">
       <strong>Total:</strong>{" "}
       {isRange ? (
         <>
