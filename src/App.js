@@ -70,8 +70,15 @@ function App() {
         <h1>68000 counter</h1>
         <p>Analyses 68000 assembly source to profile resource and size data.</p>
         <p>
-          CLI tool and JS lib available on{" "}
-          <a href="https://github.com/grahambates/68kcounter">Github</a>.
+          Available as a{" "}
+          <a href="https://marketplace.visualstudio.com/items?itemName=gigabates.68kcounter">
+            VS Code extension
+          </a>
+          {" and "}
+          <a href="https://github.com/grahambates/68kcounter">
+            npm package
+          </a>{" "}
+          containing a CLI tool and JavaScript/Typescript library.
         </p>
         <div>
           <textarea
