@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"68kcounter@^1.0.6":
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/68kcounter/-/68kcounter-1.0.6.tgz#3b5f0286d7cbc900672294933a93b514998d2948"
-  integrity sha512-1THcyLM+7cUVCdXz4cH4DH6Kt0yE2Y0rjQBjaKjI05SjSupzLzg6XzRnt1KxfM0QuLPCVAMGaBTFesQbeDVnMQ==
+"68kcounter@^1.0.9":
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/68kcounter/-/68kcounter-1.0.9.tgz#8f16409e4394c32791026a8c97918e012b920d9f"
+  integrity sha512-HeLljLTWnNwIVI0ioRBnUjhuj/ruyKl9D934o/bSFVYbzaB7L3F1AJSF46YQlsG5EEWEmswN3de/VuR9qPscdw==
   dependencies:
     chalk "^4.1.0"
     expr-eval "^2.0.2"
