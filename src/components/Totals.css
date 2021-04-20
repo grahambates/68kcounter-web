@@ -1,0 +1,7 @@
+.Totals {
+  padding: 1rem;
+  background: #ddd;
+}
+.Totals > span {
+  margin-right: 1em;
+}

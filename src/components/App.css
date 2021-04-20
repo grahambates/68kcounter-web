@@ -1,0 +1,47 @@
+form {
+  padding: 1rem;
+  max-width: 70em;
+}
+
+textarea {
+  width: 100%;
+  height: 20em;
+  margin-bottom: 1rem;
+  padding: 0.5em;
+}
+
+.App__submit {
+  background-color: black;
+  color: white;
+  font-size: 1.25rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  cursor: pointer;
+  border-radius: 30px;
+}
+.App__submit:hover {
+  background-color: #333;
+}
+
+h1 {
+  margin-top: 0;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+.App__footer {
+  padding: 1rem;
+  margin-top: 2rem;
+}
+
+.App__help {
+  padding: 1rem;
+}
+
+ul {
+  margin: 0;
+}
+
+li {
+  margin-bottom: 0.5rem;
+}
