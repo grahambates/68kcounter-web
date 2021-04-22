@@ -58,6 +58,9 @@ const reducer = (state: State, { type, payload }: Action): State => {
           ...state,
           code,
           lines,
+          selectionStart: null,
+          selectionEnd: null,
+          selectionHover: null,
           totals: calculateTotals(lines),
         };
       } else {
@@ -66,6 +69,10 @@ const reducer = (state: State, { type, payload }: Action): State => {
           code,
           lines: null,
           totals: null,
+          selectionStart: null,
+          selectionEnd: null,
+          selectionHover: null,
+          selectionTotals: null,
         };
       }
     }

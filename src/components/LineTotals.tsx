@@ -26,9 +26,9 @@ const LineTotals: FC<LineTotalsProps> = ({
 
     <strong>Total:</strong>
     {isRange ? (
-      <>
-        <Timing timing={min} /> – <Timing timing={max} />{" "}
-      </>
+      <span>
+        <Timing timing={min} />–<Timing timing={max} />
+      </span>
     ) : (
       <Timing timing={min} />
     )}

@@ -4,6 +4,7 @@ import LineTotals from "./LineTotals";
 import Words from "./Words";
 import "./Line.css";
 import { Line as LineType, Timing as TimingType, Totals } from "68kcounter";
+import { Mnemonics } from "68kcounter/dist/syntax";
 
 export interface LineProps {
   isSelected: boolean;
@@ -88,7 +89,10 @@ const Line = memo<LineProps>(
           </div>
           <div className="Line__content">
             <span className="Line__number">{index + 1}</span>
-            <pre className="Line__code">{line.text || " "}</pre>
+            <pre
+              className="Line__code"
+              dangerouslySetInnerHTML={{ __html: formatLine(line.text) }}
+            />
           </div>
         </div>
       </>
@@ -97,6 +101,21 @@ const Line = memo<LineProps>(
 );
 
 Line.displayName = "Line";
+
+const mnemExp = new RegExp(
+  `\\b((${Object.values(Mnemonics).join(
+    "|"
+  )}|blo|dblo|dbra)(\\.(b|w|l|s))?)\\b`,
+  "i"
+);
+const labelExp = /^([^\s;*]+)/;
+const commentExp = /([;*].*)/;
+
+const formatLine = (line: string) =>
+  line
+    .replace(mnemExp, '<span class="Line__mnem">$1</span>')
+    .replace(labelExp, '<span class="Line__label">$1</span>')
+    .replace(commentExp, '<span class="Line__comment">$1</span>');
 
 const formatTiming = (timing: TimingType, multiplier?: TimingType) => {
   const strVals = timing.map((v) => String(v));

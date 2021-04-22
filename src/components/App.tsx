@@ -1,19 +1,14 @@
-import React, {
-  FC,
-  useEffect,
-  useState,
-  useCallback,
-  FormEventHandler,
-  useReducer,
-} from "react";
+import React, { FC, useEffect, useCallback, useReducer } from "react";
 import reducer, { defaultState } from "../reducer";
 import "./App.css";
+import Form from "./Form";
+import Github from "./icons/Github";
+import VsCode from "./icons/VsCode";
 import Line from "./Line";
 import Totals from "./Totals";
 
 const App: FC = () => {
   const [state, dispatch] = useReducer(reducer, defaultState);
-  const [code, setCode] = useState("");
   const {
     lines,
     totals,
@@ -23,9 +18,13 @@ const App: FC = () => {
     selectionTotals,
   } = state;
 
-  const handleSubmit: FormEventHandler = (e) => {
-    e.preventDefault();
+  const handleSubmit = (code: string) => {
     dispatch({ type: "code", payload: code });
+    setTimeout(() => {
+      document
+        .getElementById("results")
+        ?.scrollIntoView({ behavior: "smooth" });
+    }, 10);
   };
 
   const clearSelection = useCallback(() => {
@@ -59,53 +58,58 @@ const App: FC = () => {
 
   return (
     <div className="App">
-      <form onSubmit={handleSubmit}>
-        <h1>68000 counter</h1>
-        <p>Analyses 68000 assembly source to profile resource and size data.</p>
-        <p>
-          Available as a{" "}
-          <a href="https://marketplace.visualstudio.com/items?itemName=gigabates.68kcounter">
-            VS Code extension
-          </a>
-          {" and "}
-          <a href="https://github.com/grahambates/68kcounter">
-            npm package
-          </a>{" "}
-          containing a CLI tool and JavaScript/Typescript library.
-        </p>
+      <div className="App__header">
         <div>
-          <textarea
-            value={code}
-            placeholder="Paste ASM source here"
-            onChange={(e) => setCode(e.target.value)}
-          />
+          <div className="App__logo">
+            <img
+              src="https://raw.githubusercontent.com/grahambates/68kcounter/master/images/icon.png"
+              alt="logo"
+            />
+            <h1>68k counter</h1>
+          </div>
+          <div className="App__intro">
+            <p>
+              Analyses 68000 assembly source to show cycle timings and
+              instruction sizes.
+            </p>
+            <div className="App__links">
+              <VsCode />
+              <a href="https://marketplace.visualstudio.com/items?itemName=gigabates.68kcounter">
+                VS Code extension
+              </a>
+              <Github />
+              <a href="https://github.com/grahambates/68kcounter">
+                JS package + CLI tool
+              </a>{" "}
+            </div>
+          </div>
         </div>
-        <button type="submit" className="App__submit">
-          Analyse
-        </button>
-      </form>
+
+        <Form onSubmit={handleSubmit} />
+      </div>
 
       {lines && (
-        <>
-          <div className="App__help">
-            <ul>
-              <li>
-                Data is shown in the left colum in the format:
-                <br />
-                <code>cycles(reads/writes) words</code>
-              </li>
-              <li>
-                Multiple values shown for branching instructions: &ldquo;branch
-                taken&rdquo;, then &ldquo;branch not taken&rdquo;
-              </li>
-              <li>
-                Click to select a range of lines and calculate totals for a
-                section of code.
-              </li>
-            </ul>
-          </div>
+        <div id="results">
+          <div className="App__resultsHeader">
+            {totals && <Totals totals={totals} />}
 
-          {totals && <Totals totals={totals} />}
+            <div className="App__help">
+              <ul>
+                <li>
+                  Data is shown in the format:{" "}
+                  <code>cycles(reads/writes) words</code>
+                </li>
+                <li>
+                  Some timings can be expanded to show how they&apos;re
+                  calculated
+                </li>
+                <li>
+                  Click to select a range of lines and calculate totals for a
+                  section of code.
+                </li>
+              </ul>
+            </div>
+          </div>
 
           {lines.map((line, i) => {
             const a = selectionStart;
@@ -129,11 +133,9 @@ const App: FC = () => {
               />
             );
           })}
-        </>
+        </div>
       )}
-      <div className="App__footer">
-        <span>&copy; 2021 Graham Bates</span>
-      </div>
+      <div className="App__footer">&copy; 2021 Graham Bates</div>
     </div>
   );
 };

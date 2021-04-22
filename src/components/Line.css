@@ -6,21 +6,30 @@
   line-height: 22px;
   cursor: pointer;
 }
-.Line:nth-child(even) {
+.Line:nth-of-type(even) {
   background-color: white;
 }
 
 .Line:hover,
+.Line:nth-of-type(even).selected:hover,
 .Line.selected:hover {
-  background-color: #48f;
+  background-color: #009193;
   color: white;
 }
+
 .Line.selected {
-  background-color: #acf;
+  background-color: #bde2e2;
+}
+.Line:nth-of-type(even).selected {
+  background-color: #d1eaea;
+}
+.Line:hover span {
+  color: white;
 }
 
 .Line__info {
   width: 270px;
+  min-width: 270px;
   background: #282828;
   color: white;
   padding-right: 1rem;
@@ -100,4 +109,16 @@
 .Line__detailLabel {
   color: rgba(255, 255, 255, 0.5);
   margin-right: 0.5rem;
+}
+
+.Line__comment {
+  color: #888;
+}
+
+.Line__label {
+  color: #009193;
+}
+
+.Line__mnem {
+  color: #c72222;
 }
