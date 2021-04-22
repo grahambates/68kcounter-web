@@ -38,7 +38,10 @@ const Form: FC<InputProps> = ({ onSubmit }) => {
 
   const handleFiles = (f: FileList | null) => {
     if (f && f[0]) {
-      f[0].text().then(setCode);
+      f[0].text().then((code) => {
+        setCode(code);
+        onSubmit(code);
+      });
     }
   };
 

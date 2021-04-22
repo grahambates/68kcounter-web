@@ -103,13 +103,13 @@ const Line = memo<LineProps>(
 Line.displayName = "Line";
 
 const mnemExp = new RegExp(
-  `\\b((${Object.values(Mnemonics).join(
+  `(?<![;*])\\b((${Object.values(Mnemonics).join(
     "|"
   )}|blo|dblo|dbra)(\\.(b|w|l|s))?)\\b`,
   "i"
 );
 const labelExp = /^([^\s;*]+)/;
-const commentExp = /([;*].*)/;
+const commentExp = /((;|\s\*|^\*).*)/;
 
 const formatLine = (line: string) =>
   line

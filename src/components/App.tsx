@@ -64,6 +64,8 @@ const App: FC = () => {
             <img
               src="https://raw.githubusercontent.com/grahambates/68kcounter/master/images/icon.png"
               alt="logo"
+              width="96"
+              height="96"
             />
             <h1>68k counter</h1>
           </div>
