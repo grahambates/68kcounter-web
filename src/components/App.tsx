@@ -3,6 +3,7 @@ import reducer, { defaultState } from "../reducer";
 import "./App.css";
 import Form from "./Form";
 import Github from "./icons/Github";
+import Logo from "./icons/Logo";
 import VsCode from "./icons/VsCode";
 import Line from "./Line";
 import Totals from "./Totals";
@@ -61,12 +62,7 @@ const App: FC = () => {
       <div className="App__header">
         <div>
           <div className="App__logo">
-            <img
-              src="https://raw.githubusercontent.com/grahambates/68kcounter/master/images/icon.png"
-              alt="logo"
-              width="96"
-              height="96"
-            />
+            <Logo size="96" />
             <h1>68k counter</h1>
           </div>
           <div className="App__intro">

@@ -3,10 +3,16 @@
 }
 
 .Form__textarea {
+  border: none;
+  height: 20em;
   width: 100%;
-  height: 100%;
-  padding: 0.5em;
+  resize: none;
   border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.Form__textarea:focus {
+  outline: none;
+  border-color: #009193;
 }
 
 .Form__submit {
@@ -26,25 +32,26 @@
 }
 
 .Form__dropper {
-  height: 20em;
+  background: white;
   margin-bottom: 1rem;
-}
-.Form__dropper span {
-  display: none;
+  position: relative;
 }
 
-.Form__dropper.isDragging {
-  background: #009193;
-  color: white;
-  display: flex;
+.Form__dropOverlay {
+  background-color: rgba(255, 255, 255, 0.95);
+  color: #009193;
+  opacity: 0.8;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-}
-
-.Form__dropper.isDragging textarea {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: none;
 }
 
-.Form__dropper.isDragging span {
-  display: block;
+.isDragging .Form__dropOverlay {
+  display: flex;
 }

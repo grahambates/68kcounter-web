@@ -1,5 +1,6 @@
 import React, { FC, FormEvent, useEffect, useRef, useState } from "react";
 import "./Form.css";
+import Asm from "./icons/Asm";
 
 export interface InputProps {
   onSubmit: (code: string) => void;
@@ -10,30 +11,32 @@ const Form: FC<InputProps> = ({ onSubmit }) => {
   const [dragging, setDragging] = useState(false);
   const [code, setCode] = useState("");
 
-  const handleDrag = (e: DragEvent) => {
+  let dragCounter = 0;
+
+  const handleDragOver = (e: DragEvent) => {
     e.preventDefault();
-    e.stopPropagation();
   };
 
-  const handleDragEnter = (e: DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const handleDragEnter = () => {
     setDragging(true);
+    dragCounter++;
   };
 
-  const handleDragLeave = (e: DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragging(false);
+  const handleDragLeave = () => {
+    dragCounter--;
+    if (!dragCounter) {
+      setDragging(false);
+    }
   };
 
   const handleDrop = (e: DragEvent) => {
     e.preventDefault();
-    e.stopPropagation();
-    if (e.dataTransfer?.files) {
-      handleFiles(e.dataTransfer?.files);
-    }
     setDragging(false);
+    if (e.target === ref.current) {
+      if (e.dataTransfer?.files) {
+        handleFiles(e.dataTransfer?.files);
+      }
+    }
   };
 
   const handleFiles = (f: FileList | null) => {
@@ -52,33 +55,33 @@ const Form: FC<InputProps> = ({ onSubmit }) => {
 
   useEffect(() => {
     if (ref.current) {
-      const div = ref.current;
-      div.addEventListener("dragover", handleDrag);
-      div.addEventListener("dragenter", handleDragEnter);
-      div.addEventListener("dragleave", handleDragLeave);
-      div.addEventListener("drop", handleDrop);
+      // const div = ref.current;
+      document.addEventListener("dragover", handleDragOver);
+      document.addEventListener("dragenter", handleDragEnter);
+      document.addEventListener("dragleave", handleDragLeave);
+      document.addEventListener("drop", handleDrop);
       return () => {
-        div.removeEventListener("dragover", handleDrag);
-        div.removeEventListener("dragenter", handleDragEnter);
-        div.removeEventListener("dragleave", handleDragLeave);
-        div.removeEventListener("drop", handleDrop);
+        document.removeEventListener("dragover", handleDragOver);
+        document.removeEventListener("dragenter", handleDragEnter);
+        document.removeEventListener("dragleave", handleDragLeave);
+        document.removeEventListener("drop", handleDrop);
       };
     }
   }, [ref]);
   return (
     <form className="Form" onSubmit={handleSubmit}>
       <input type="file" onChange={(e) => handleFiles(e.target.files)} />
-      <div
-        className={"Form__dropper" + (dragging ? " isDragging" : "")}
-        ref={ref}
-      >
+      <div className={"Form__dropper" + (dragging ? " isDragging" : "")}>
         <textarea
           className="Form__textarea"
           value={code}
           placeholder="Paste or drop ASM source here"
           onChange={(e) => setCode(e.target.value)}
         />
-        <span>Drop here</span>
+        <div className="Form__dropOverlay" ref={ref}>
+          <Asm size="3em" />
+          <div>Drop here</div>
+        </div>
       </div>
       <button type="submit" className="Form__submit">
         Analyse
