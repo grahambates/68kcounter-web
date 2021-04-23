@@ -62,8 +62,7 @@ const App: FC = () => {
       <div className="App__header">
         <div>
           <div className="App__logo">
-            <Logo size="96" />
-            <h1>68k counter</h1>
+            <Logo size="300" />
           </div>
           <div className="App__intro">
             <p>
