@@ -119,7 +119,7 @@ const App: FC = () => {
 
             return (
               <Line
-                key={i + line.text}
+                key={i + line.statement.text}
                 line={line}
                 index={i}
                 totals={i === selectionStart ? selectionTotals : null}

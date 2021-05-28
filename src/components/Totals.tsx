@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Totals as TotalsType } from "68kcounter";
 import Timing from "./Timing";
-import Words from "./Words";
+import Bytes from "./Bytes";
 import "./Totals.css";
 
 export interface TotalsProps {
@@ -27,7 +27,7 @@ const Totals: FC<TotalsProps> = ({ totals }) => (
         <div>
           <strong>Total length: </strong>
         </div>
-        <Words words={totals.words} /> words ({totals.words * 2} bytes)
+        <Bytes bytes={totals.bytes} /> bytes)
       </p>
     </div>
   </div>

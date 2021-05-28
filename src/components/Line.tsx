@@ -1,7 +1,7 @@
 import React, { memo, useState } from "react";
 import Timing from "./Timing";
 import LineTotals from "./LineTotals";
-import Words from "./Words";
+import Bytes from "./Bytes";
 import "./Line.css";
 import { Line as LineType, Timing as TimingType, Totals } from "68kcounter";
 import { Mnemonics } from "68kcounter/dist/syntax";
@@ -52,7 +52,7 @@ const Line = memo<LineProps>(
               )}
               {line.timings &&
                 line.timings.map((t, i) => <Timing timing={t} key={i} color />)}
-              {line.words && <Words words={line.words} color />}
+              {!!line.bytes && <Bytes bytes={line.bytes} color />}
             </div>
             {hasDetail && (
               <div className={"Line__detail" + (expanded ? " expanded" : "")}>
@@ -91,7 +91,9 @@ const Line = memo<LineProps>(
             <span className="Line__number">{index + 1}</span>
             <pre
               className="Line__code"
-              dangerouslySetInnerHTML={{ __html: formatLine(line.text) }}
+              dangerouslySetInnerHTML={{
+                __html: formatLine(line.statement.text),
+              }}
             />
           </div>
         </div>

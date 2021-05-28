@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Totals } from "68kcounter";
 import Timing from "./Timing";
-import Words from "./Words";
+import Bytes from "./Bytes";
 import "./LineTotals.css";
 
 export interface LineTotalsProps {
@@ -10,7 +10,7 @@ export interface LineTotalsProps {
 }
 
 const LineTotals: FC<LineTotalsProps> = ({
-  totals: { min, max, isRange, words },
+  totals: { min, max, isRange, bytes },
   onClearSelection,
 }) => (
   <div className="LineTotals">
@@ -32,7 +32,7 @@ const LineTotals: FC<LineTotalsProps> = ({
     ) : (
       <Timing timing={min} />
     )}
-    <Words words={words} />
+    <Bytes bytes={bytes} />
   </div>
 );
 
