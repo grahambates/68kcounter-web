@@ -111,14 +111,14 @@
   margin-right: 0.5rem;
 }
 
-.Line__comment {
-  color: #888;
-}
-
 .Line__label {
   color: #009193;
 }
 
 .Line__mnem {
   color: #c72222;
+}
+
+.Line__comment {
+  color: #888;
 }

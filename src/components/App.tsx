@@ -94,7 +94,7 @@ const App: FC = () => {
               <ul>
                 <li>
                   Data is shown in the format:{" "}
-                  <code>cycles(reads/writes) words</code>
+                  <code>cycles(reads/writes) bytes</code>
                 </li>
                 <li>
                   Some timings can be expanded to show how they&apos;re
