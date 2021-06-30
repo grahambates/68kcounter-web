@@ -3,8 +3,12 @@ import Timing from "./Timing";
 import LineTotals from "./LineTotals";
 import Bytes from "./Bytes";
 import "./Line.css";
-import { Line as LineType, Timing as TimingType, Totals } from "68kcounter";
-import { Mnemonics } from "68kcounter/dist/syntax";
+import {
+  Line as LineType,
+  Timing as TimingType,
+  Mnemonics,
+  Totals,
+} from "68kcounter";
 
 export interface LineProps {
   isSelected: boolean;
@@ -18,9 +22,10 @@ export interface LineProps {
 
 const Line = memo<LineProps>(
   ({ isSelected, onHover, onClick, onClearSelection, line, index, totals }) => {
-    const isMultiple = line.timings && line.timings.length > 1;
-    const hasEa = line.calculation?.ea && line.calculation.ea[0] > 0;
-    const hasMultiplier = line.calculation?.multiplier;
+    const isMultiple = line.timing && line.timing.values.length > 1;
+    const hasEa =
+      line.timing?.calculation?.ea && line.timing.calculation.ea[0] > 0;
+    const hasMultiplier = line.timing?.calculation?.multiplier;
     const isCalculated = hasEa || hasMultiplier;
     const hasDetail = isCalculated || isMultiple;
 
@@ -50,18 +55,20 @@ const Line = memo<LineProps>(
                   </button>
                 </div>
               )}
-              {line.timings &&
-                line.timings.map((t, i) => <Timing timing={t} key={i} color />)}
+              {line.timing &&
+                line.timing.values.map((t, i) => (
+                  <Timing timing={t} key={i} color />
+                ))}
               {!!line.bytes && <Bytes bytes={line.bytes} color />}
             </div>
-            {hasDetail && (
+            {hasDetail && line.timing && (
               <div className={"Line__detail" + (expanded ? " expanded" : "")}>
                 <div className="Line__detailContent">
                   {isMultiple &&
-                    line.timings?.map((t, i) => (
+                    line.timing.values.map((t, i) => (
                       <div key={i}>
                         <span className="Line__detailLabel">
-                          {multipleLabels[i]}:
+                          {line.timing!.labels![i]}:
                         </span>
                         {formatTiming(t)}
                       </div>
@@ -69,18 +76,18 @@ const Line = memo<LineProps>(
                   {(hasMultiplier || hasEa) && (
                     <div>
                       {formatTiming(
-                        line.calculation!.base[0],
-                        line.calculation!.multiplier
+                        line.timing.calculation!.base[0],
+                        line.timing.calculation!.multiplier
                       )}
                     </div>
                   )}
                   {hasMultiplier && (
-                    <div>n = {line.calculation?.n ?? "unknown"}</div>
+                    <div>n = {line.timing.calculation?.n ?? "unknown"}</div>
                   )}
                   {hasEa && (
                     <div>
                       <span className="Line__detailLabel">+ EA:</span>
-                      {formatTiming(line.calculation!.ea!)}
+                      {formatTiming(line.timing.calculation!.ea!)}
                     </div>
                   )}
                 </div>
@@ -132,7 +139,5 @@ const formatTiming = (timing: TimingType, multiplier?: TimingType) => {
 
   return `${strVals[0]}(${strVals[1]}/${strVals[2]})`;
 };
-
-const multipleLabels = ["Taken", "Not taken", "Expired"];
 
 export default Line;
