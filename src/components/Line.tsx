@@ -41,7 +41,6 @@ const Line = memo<LineProps>(
           onMouseEnter={() => onHover(index)}
         >
           <div className="Line__info">
-            {JSON.stringify(line)}
             <div className="Line__infoItems">
               {hasDetail && (
                 <div className="Line__toggleWrapper">
