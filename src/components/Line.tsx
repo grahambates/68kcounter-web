@@ -112,7 +112,7 @@ const Line = memo<LineProps>(
 Line.displayName = "Line";
 
 const mnemExp = new RegExp(
-  `(?<![;*])\\b((${Object.values(Mnemonics).join(
+  `(?<![;*])(?<=\\s|:)((${Object.values(Mnemonics).join(
     "|"
   )}|blo|dblo|dbra)(\\.(b|w|l|s))?)\\b`,
   "i"
@@ -120,11 +120,21 @@ const mnemExp = new RegExp(
 const labelExp = /^([^\s;*]+)/;
 const commentExp = /((;|\s\*|^\*).*)/;
 
-const formatLine = (line: string) =>
-  line
-    .replace(mnemExp, '<span class="Line__mnem">$1</span>')
-    .replace(labelExp, '<span class="Line__label">$1</span>')
-    .replace(commentExp, '<span class="Line__comment">$1</span>');
+const formatLine = (line: string) => {
+  const labelMatch = line.match(labelExp);
+  const mnemMatch = line.match(mnemExp);
+  const commentMatch = line.match(commentExp);
+  if (labelMatch) {
+    line = line.replace(labelExp, '<span class="Line__label">$1</span>');
+  }
+  if (mnemMatch) {
+    line = line.replace(mnemExp, '<span class="Line__mnem">$1</span>');
+  }
+  if (commentMatch) {
+    line = line.replace(commentExp, '<span class="Line__comment">$1</span>');
+  }
+  return line;
+};
 
 const formatTiming = (timing: TimingType, multiplier?: TimingType) => {
   const strVals = timing.map((v) => String(v));
