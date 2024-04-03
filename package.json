@@ -9,7 +9,7 @@
     "url": "https://github.com/grahambates/68kcounter-web.git"
   },
   "dependencies": {
-    "68kcounter": "^3.1.1",
+    "68kcounter": "^3.2.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3"
